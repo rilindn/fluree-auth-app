@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
     // })
   ],
   callbacks: {
-    async jwt({token, user, trigger}) {
+    async jwt({token, user, trigger}: any) {
       if (trigger === "update") {
         const userData = users.find((user) => user.email === token?.email)
         return { ...token, ...userData }

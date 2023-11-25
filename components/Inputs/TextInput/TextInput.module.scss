@@ -1,0 +1,41 @@
+@import '../../../theme/styles/variables';
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+
+  &.errorSpace {
+    margin-bottom: 10px;
+  }
+
+  .error {
+    position: absolute;
+    bottom: -17px;
+    left: 5px;
+    width: 100%;
+    color: rgb(222, 83, 83);
+    font-size: $font-size-2xs-5;
+  }
+
+  label,
+  input,
+  textarea {
+    color: $color-darkgray-100;
+    // top: -2px;
+    font-size: $font-size-sm;
+  }
+
+  input {
+    // height: 15px !important;
+    padding: 0.5rem 1rem;
+  }
+
+  fieldset {
+    border: 1px solid #555 !important;
+  }
+
+
+  :global(.MuiFormControl-root) {
+    width: 100%;
+  }
+}

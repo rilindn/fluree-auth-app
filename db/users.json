@@ -1,0 +1,26 @@
+[
+  {
+    "id": "c655849e-06b4-4b39-80c6-4ecb46e64eee",
+    "name": "Rilind Nuha",
+    "email": "rilindnuha15@gmail.com",
+    "password": "$2a$10$XQ1.Q9O26awdNL0HKHXjLeQqc1AexngF.Nj.Um0763pGOSdO.jTBG",
+    "verificationCode": "9bb6fb8ea0fae6d0f62739b4dca525058e300397",
+    "emailVerified": true
+  },
+  {
+    "id": "86db8f97-a5a9-48b9-ac5e-181501650577",
+    "name": "Rilind Nuha",
+    "email": "rilindnuha1@gmail.com",
+    "password": "$2a$10$ouNp1YgBGOrPE.c.I0DJu.RQQypdf5CVwtDaQws4YFH32yOI.KbT.",
+    "verificationCode": "4fd24ad5b922bbc6c0a5742c4e27284fdfb13f8e",
+    "emailVerified": false
+  },
+  {
+    "id": "0cb46f9f-29ed-493f-9267-ad6075c9e682",
+    "name": "Rilind Nuha",
+    "email": "rilindnuha5@gmail.com",
+    "password": "$2a$10$FnuIkZAdZFQ9HIVEs/BoIOuhCihrBB.0DFMT/aa.gHEANUn.uudsa",
+    "verificationCode": "c26b8c89c7c4fcde3ee75dbe4b73fc04eb9d0f2f",
+    "emailVerified": false
+  }
+]

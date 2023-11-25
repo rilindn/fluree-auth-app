@@ -8,41 +8,6 @@ import users from '../../../../db/users.json'
 import { FlureeClient } from "../../../../lib/api/ApiBase";
 import { findUser } from "../../../../lib/api/FlureeMethods";
 
-export const POST2 = async (request: any) => {
-  const requestBody = await request.json();
-  const { email, password } = requestBody;
-  console.log("🚀 ~ file: route.ts:10 ~ POST ~ requestBody:", requestBody)
-
-  if (!email) {
-    return;
-  }
-
-  // Read user data from file
-  const usersData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'db', 'users.json'), 'utf8'));
-  const existingUser = usersData.find((u: any) => u.email === email);
-
-  if (existingUser) {
-    return new NextResponse("Email is already in use!", { status: 400 });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = {
-    id: uuidv4(),
-    ...requestBody,
-    password: hashedPassword
-  };
-
-  try {
-    users.push(user)
-    fs.writeFileSync(path.join(process.cwd(), 'db', 'users.json'), JSON.stringify(users, null, 2));
-    return new NextResponse("User is registered successfully!", { status: 200 });
-  } catch (err: any) {
-    return new NextResponse(err, {
-      status: 500,
-    });
-  }
-};
-
 export const POST = async (request: any) => {
   const requestBody = await request.json();
   const { email, password } = requestBody;

@@ -4,7 +4,6 @@ import fs from 'fs'
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
-import users from '../../../../db/users.json'
 import { FlureeClient } from "../../../../lib/api/ApiBase";
 import { findUser } from "../../../../lib/api/FlureeMethods";
 
@@ -89,8 +88,8 @@ export const PUT = async (request: any) => {
   };
 
   try {
-    users[userIndex] = userPayload
-    fs.writeFileSync(path.join(process.cwd(), 'db', 'users.json'), JSON.stringify(users, null, 2));
+    // users[userIndex] = userPayload
+    // fs.writeFileSync(path.join(process.cwd(), 'db', 'users.json'), JSON.stringify(users, null, 2));
     return new NextResponse("User updated successfully!", { status: 200 });
   } catch (err: any) {
     return new NextResponse(err, {

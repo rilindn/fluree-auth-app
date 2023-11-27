@@ -15,7 +15,6 @@ export const POST = async (request: any) => {
     return new NextResponse("Email not provided!", { status: 401 });
   }
 
-  // Read user data from file
   const existingUser = await findUser(email)
   console.log("🚀 ~ file: route.ts:67 ~ POST ~ existingUser:", existingUser)
 
@@ -73,25 +72,32 @@ export const PUT = async (request: any) => {
     return;
   }
 
-  // Read user data from file
-  const usersData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'db', 'users.json'), 'utf8'));
-  const userIndex = usersData.findIndex((u: any) => u.email === email);
-  const userData = usersData[userIndex]
-
-  if (!userData) {
+  const existingUser = await findUser(email)
+  if (!existingUser) {
     return new NextResponse("User not found!", { status: 404 });
   }
 
-  const userPayload = {
-    ...userData,
-    ...requestBody,
-  };
-
   try {
-    // users[userIndex] = userPayload
-    // fs.writeFileSync(path.join(process.cwd(), 'db', 'users.json'), JSON.stringify(users, null, 2));
-    return new NextResponse("User updated successfully!", { status: 200 });
+    const result = await FlureeClient.post('/transact', {
+      "@context": {
+        "fl": "https://ns.flur.ee",
+        "person": "http://thinkgraph.org/ontologies/core/person#"
+      },
+      "ledger": `fluree-jld/${process.env.LEDGER}`,
+      "delete": {
+        "@id": existingUser['@id'],
+        "user:emailVerified": false
+      },
+      "insert": [
+        {
+          "@id": existingUser['@id'],
+          "user:emailVerified": true
+        }
+      ]
+    })
+    return new NextResponse("Email verified successfully!", { status: 200 });
   } catch (err: any) {
+    console.log("🚀 ~ file: route.ts:111 ~ POST ~ err:", err)
     return new NextResponse(err, {
       status: 500,
     });

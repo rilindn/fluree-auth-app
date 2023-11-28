@@ -13,7 +13,8 @@ export default function ConfirmEmailDialog() {
     try {
       await sendEmail({
         recipientEmail: session?.user?.email,
-        verificationCode: session?.user?.verificationCode
+        verificationCode: session?.user?.verificationCode,
+        locationOrigin: window.location.origin
       })
     } finally {
       // onCancel();

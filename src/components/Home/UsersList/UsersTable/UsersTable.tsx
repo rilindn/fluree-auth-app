@@ -9,7 +9,7 @@ import styles from './UsersTable.module.scss';
 import { createCredential } from '../../../../../lib/api/ApiMethods';
 
 export default function UsersTable({users}: {users: any}) {
-  const { data: session, update, status } = useSession()
+  const { data: session }: {data: any} = useSession()
   const router = useRouter();
 
   const handleVerify = async (user: any) => {

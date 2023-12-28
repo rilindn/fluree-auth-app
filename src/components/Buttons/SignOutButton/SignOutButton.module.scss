@@ -1,0 +1,11 @@
+.main button {
+    background-color: rgb(240, 45, 45) !important;
+    border-radius: 10px;
+    min-height: 40px !important;
+    width: auto;
+
+    &:hover {
+        background-color: rgba(240, 45, 45, 0.9);
+        border: 0;
+    }
+}

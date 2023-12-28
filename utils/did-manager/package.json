@@ -1,0 +1,31 @@
+{
+  "name": "dids",
+  "version": "1.0.0",
+  "description": "",
+  "main": "create_did.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create-did": "node src/create-identifier",
+    "resolve-did": "node src/resolve-identifier",
+    "list-did": "node src/list-identifiers",
+    "create-credential": "node src/create-credential"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decentralized-identity/ion-tools": "^1.1.4",
+    "axios": "^1.6.2",
+    "base58-js": "^2.0.0",
+    "bs58": "^5.0.0",
+    "crypto-ld": "^7.0.0",
+    "did-cli": "^0.6.0",
+    "did-io": "^0.8.3",
+    "did-method-key": "^0.7.0",
+    "elliptic": "^6.5.4",
+    "libsodium-wrappers": "^0.7.13",
+    "uuid": "^9.0.1",
+    "webcrypto-shim": "^0.1.7",
+    "x25519-key-pair": "^3.1.0",
+    "yargs": "^17.7.2"
+  }
+}

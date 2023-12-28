@@ -5,7 +5,8 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FlureeClient } from "../../../../lib/api/ApiBase";
-import { findUser } from "../../../../lib/api/FlureeMethods";
+import { findUser, transactFluree } from "../../../../lib/api/FlureeMethods";
+import { createIdentifier } from '../../../../utils/did-manager'
 
 export const POST = async (request: any) => {
   const requestBody = await request.json();
@@ -15,38 +16,54 @@ export const POST = async (request: any) => {
     return new NextResponse("Email not provided!", { status: 401 });
   }
 
-  const existingUser = await findUser(email)
-  console.log("🚀 ~ file: route.ts:67 ~ POST ~ existingUser:", existingUser)
+  // const existingUser = await findUser(email)
+  // console.log("🚀 ~ file: route.ts:67 ~ POST ~ existingUser:", existingUser)
 
-  if (existingUser) {
-    return new NextResponse("Email is already in use!", { status: 400 });
-  }
+  // if (existingUser) {
+  //   return new NextResponse("Email is already in use!", { status: 400 });
+  // }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const id = uuidv4()
-  const currentDate = new Date().toISOString()
-  const user = {
-    "@id": `sys:user:${id}`,
-    "@type": "User",
-    // We have not created the person yet, so we cannot add the ID below.
-    // We must come back later and update this.
-    "person:personId": { "@id": `person:${id}` },
-    "user:userName": requestBody.name,
-    "user:email": email,
-    "user:password": hashedPassword,
-    "user:dateCreated": currentDate,
-    // This assumes that this user is being created by himself as he/she's creating the account
-    // Otherwise it will be someone else's Id such as an admin
-    "user:createdUserId": `sys:user:${id}`,
-    "user:dateModified": currentDate,
-    // This assumes that this user is being created by himself as he/she's creating the account or modifing the account
-    // Otherwise it will be someone else's Id such as an admin
-    "user:modifiedUserId": `sys:user:${id}`,
-    "user:verificationCode": requestBody.verificationCode,
-    "user:emailVerified": false
-  };
 
   try {
+
+    // create DID and DID document and assign it to the user
+    const didDocument = await createIdentifier()
+    console.log("🚀 ~ file: route.ts:31 ~ POST ~ didDocument:", didDocument)
+    const res = await FlureeClient.post('/transact', {
+      "@context": {
+        "fl": "https://ns.flur.ee",
+        "did": "https://www.w3.org/ns/did/v1#"
+      },
+      "ledger": `fluree-jld/${process.env.LEDGER}`,
+      "insert": [didDocument]
+    })
+    console.log("🚀 ~ file: route.ts:38 ~ POST ~ res:", res)
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const id = uuidv4()
+    const currentDate = new Date().toISOString()
+    const user = {
+      "@id": `sys:user:${id}`,
+      "@type": "User",
+      // We have not created the person yet, so we cannot add the ID below.
+      // We must come back later and update this.
+      "person:did": { "@id": didDocument["@id"] },
+      "person:personId": { "@id": `person:${id}` },
+      "user:userName": requestBody.name,
+      "user:email": email,
+      "user:role": "BasicUser",
+      "user:password": hashedPassword,
+      "user:dateCreated": currentDate,
+      // This assumes that this user is being created by himself as he/she's creating the account
+      // Otherwise it will be someone else's Id such as an admin
+      "user:createdUserId": `sys:user:${id}`,
+      "user:dateModified": currentDate,
+      // This assumes that this user is being created by himself as he/she's creating the account or modifing the account
+      // Otherwise it will be someone else's Id such as an admin
+      "user:modifiedUserId": `sys:user:${id}`,
+      "user:verificationCode": requestBody.verificationCode,
+      "user:emailVerified": false
+    };
     const result = await FlureeClient.post('/transact', {
       "@context": {
         "fl": "https://ns.flur.ee",

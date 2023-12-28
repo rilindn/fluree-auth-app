@@ -9,7 +9,8 @@ declare module 'next-auth' {
       email: string
       password: string,
       verificationCode: string,
-      emailVerified: boolean
+      emailVerified: boolean,
+      role: string
     }
   }
 }
@@ -21,7 +22,8 @@ declare module "next-auth/jwt" {
     email: string
     password: string,
     verificationCode: string,
-    emailVerified: boolean
+    emailVerified: boolean,
+    role: string
   } 
 }
 

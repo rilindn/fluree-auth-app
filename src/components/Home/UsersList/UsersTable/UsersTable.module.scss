@@ -1,0 +1,19 @@
+@import '../../../../../theme/styles/variables';
+
+.main {
+  width: 100%;
+
+  button {
+    background-color: rgb(240, 168, 45);
+    border-radius: 10px;
+    min-height: 40px;
+    margin: auto;
+    width: auto;
+    font-size: 14px;
+
+    &:hover {
+      background-color: rgb(249, 202, 122);
+      border: 0;
+    }
+  }
+}

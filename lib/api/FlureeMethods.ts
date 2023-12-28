@@ -20,7 +20,8 @@ export async function findUser(email: string) {
         "password": "user:password",
         "emailVerified": "user:emailVerified",
         "verificationCode": "user:verificationCode",
-        "name": "user:userName"
+        "name": "user:userName",
+        "role": "user:role"
       },
       "from": `fluree-jld/${process.env.LEDGER}`,
       "where": {
@@ -29,7 +30,38 @@ export async function findUser(email: string) {
       }, 
       "select": { "?id": ["*"] }
     })
-    return result.data[0]
+    return result?.data?.[0]
+  } catch (err) {
+    console.log("🚀 ~ file: ApiMethods.ts:26 ~ fetchFluree ~ err:", err)
+    throw err
+  }
+}
+
+export async function listUsers() {
+  try {
+    // Read user data from file
+    console.log("🚀 ~ file: FlureeMethods.ts:61 ~ listUsers ~ FlureeClient:", FlureeClient)
+
+    const result = await FlureeClient.post('/query', {
+      "@context": {
+        "fl": "https://ns.flur.ee",
+        "person": "http://thinkgraph.org/ontologies/core/person#",
+        "email": "user:email",
+        "password": "user:password",
+        "emailVerified": "user:emailVerified",
+        "verificationCode": "user:verificationCode",
+        "name": "user:userName",
+        "role": "user:role"
+      },
+      "from": `fluree-jld/${process.env.LEDGER}`,
+      "where": {
+        "@id": "?id",
+        "user:role": "BasicUser"
+      }, 
+      "select": { "?id": ["*"] }
+    })
+    console.log("🚀 ~ file: FlureeMethods.ts:68 ~ listUsers ~ result?.data:", result?.data)
+    return result?.data
   } catch (err) {
     console.log("🚀 ~ file: ApiMethods.ts:26 ~ fetchFluree ~ err:", err)
     throw err
@@ -71,6 +103,26 @@ export async function updateUser(payload: Partial<IUserPayload>) {
     })
     console.log("🚀 ~ file: ApiMethods.ts:29 ~ registerUser ~ result:", result)
   } catch (err) {
+    throw err
+  }
+}
+
+export async function transactFluree(payload: any) {
+  try {
+    const result = await FlureeClient.post('/transact', payload)
+    console.log("🚀 ~ file: FlureeMethods.js:23 ~ transact ~ result:", result.data)
+  } catch (err) {
+    console.log("🚀 ~ file: ApiMethods.ts:26 ~ fetchFluree ~ err:", err)
+      // throw err
+  }
+}
+
+export async function queryFluree(queryPaylaod: any) {
+  try {
+    const result = await FlureeClient.post('/query', queryPaylaod)
+    return result.data
+  } catch (err) {
+    console.log("Error:", err)
     throw err
   }
 }
